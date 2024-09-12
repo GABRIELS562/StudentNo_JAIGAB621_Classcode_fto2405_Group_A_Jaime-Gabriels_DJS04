@@ -7,29 +7,38 @@
  * @param {Object} authors - A map of author IDs to author names.
  * @returns {HTMLElement} - The created preview button element.
  */
-export // Function to create a book preview element using the Web Component
-function createBookPreview(book) {
-  const previewElement = document.createElement('book-preview');  // Use the Web Component
-  previewElement.bookData = {  // Set the book data
-    id: book.id,
-    title: book.title,
-    image: book.image,
-    author: authors[book.author]
-  };
-  return previewElement;
-}
-// Function to render a list of book previews
-function renderBookList(bookList, container, start = 0, end = BOOKS_PER_PAGE) {
-  const fragment = document.createDocumentFragment();
-  bookList.slice(start, end).forEach((book) => {
-    const previewElement = createBookPreview(book);  // Use Web Component
-    fragment.appendChild(previewElement);
-  });
-  container.appendChild(fragment);
+export function createBookPreview(book, authors) {
+  const element = document.createElement("button");// creates button element 
+  element.classList.add("preview"); //assign the class preview to button
+  element.setAttribute("data-preview", book.id);// Set a custom attribute 'data-preview' with the book's id
+
+  // Define the HTML structure of the book preview, displaying image, title, and author
+  element.innerHTML = `
+        <img class="preview__image" src="${book.image}" />
+        <div class="preview__info">
+            <h3 class="preview__title">${book.title}</h3>
+            <div class="preview__author">${authors[book.author]}</div>
+        </div>`;
+
+         // Return the created element (book preview button)
+  return element;
 }
 
-// Initially render book previews
-renderBookList(matches, document.querySelector('[data-list-items]'));
+// Function to render a list of book previews on page
+export function renderBookList(
+  bookList,
+  container,
+  authors,
+  start = 0,
+  end = 10,
+) {
+  const fragment = document.createDocumentFragment();// Create a document fragment to efficiently append multiple elements
+  bookList.slice(start, end).forEach((book) => {
+    const previewElement = createBookPreview(book, authors);// Create a book preview
+    fragment.appendChild(previewElement);// Append it to the fragment
+  });
+  container.appendChild(fragment);// Append the fragment with all book previews to the container
+}
 
 // Function to create an option element
 export function createOptionElement(value, text) {
@@ -75,11 +84,13 @@ export function updateShowMoreButton(matches, page, button, BOOKS_PER_PAGE) {// 
 export function filterBooks({ title, author, genre }, bookList) {
   return bookList.filter((book) => {
     const titleMatch =
-      title.trim() === "" || // Match title
-      book.title.toLowerCase().includes(title.toLowerCase());
-    const authorMatch = author === "any" || book.author === author;// Match author
-    const genreMatch = genre === "any" || book.genres.includes(genre);// Match genre
+      title.trim() === "" || // If title filter is empty, match all titles
+      book.title.toLowerCase().includes(title.toLowerCase()); // Otherwise, check if the title includes the search term
 
-    return titleMatch && authorMatch && genreMatch;
-  });// Return books that match all criteria
+    const authorMatch = author === "any" || book.author === author; // Match if the author is "any" or matches the selected author ID
+
+    const genreMatch = genre === "any" || book.genres.includes(genre); // Match if genre is "any" or is included in the book's genre array
+
+    return titleMatch && authorMatch && genreMatch; // Return true if all conditions match
+  });
 }

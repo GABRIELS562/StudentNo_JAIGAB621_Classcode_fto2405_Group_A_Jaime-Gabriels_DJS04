@@ -1,43 +1,17 @@
+// main.js
+
 // @ts-disable
-//es-lint disable
-import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js"; // Import the data
-import {//imports from utils.js
-  renderBookList,
-  renderDropdownOptions,
-  updateShowMoreButton,
-  filterBooks,
-} from "./utils.js"; // Import the utility functions
+// es-lint disable
+import { books, authors, genres } from './data.js'; // Import the data
+import { renderDropdownOptions, filterBooks } from './utils.js'; // Import the utility functions
+import './book-preview.js'; // Import the book-preview component
+import './book-list.js'; // Import the book-list component
 
-let page = 1; // counter which tracks which books are being viewed
-let matches = books; // book array, list of books displayed
-
-/**
- * @param {Array} books - Array of book objects.
- * @param {HTMLElement} container - The HTML element where the book list will be rendered.
- * @param {Object} authors - Object containing author details.
- * @param {number} start - The starting index for the book list.
- * @param {number} end - The ending index for the book list.
- */
-renderBookList(// Render the initial list of book previews
-  matches,
-  document.querySelector("[data-list-items]"),
-  authors,
-  0,
-  32,
-);
-
-/**
- * @param {Array} books - Array of book objects.
- * @param {number} page - The current page number.
- * @param {HTMLElement} button - The HTML element for the "Show More" button.
- * @param {number} booksPerPage - The number of books to display per page.
- */
-updateShowMoreButton(
-  matches,
-  page,
-  document.querySelector("[data-list-button]"),
-  BOOKS_PER_PAGE,
-);
+// Render the book list using the Web Component
+const bookListElement = document.createElement('book-list');
+bookListElement.setAttribute('books', JSON.stringify(books));
+bookListElement.setAttribute('authors', JSON.stringify(authors));
+document.querySelector('[data-list-items]').replaceWith(bookListElement);
 
 // Convert `genres` and `authors` objects to arrays of {id, name} format
 const genreObjects = Object.entries(genres).map(([id, name]) => ({ id, name }));
@@ -46,11 +20,6 @@ const authorObjects = Object.entries(authors).map(([id, name]) => ({
   name,
 }));
 
-/**
- * @param {Array} options - Array of genre or author objects.
- * @param {HTMLElement} dropdown - The HTML element for the dropdown.
- * @param {string} defaultOption - The default option for the dropdown.
- */
 renderDropdownOptions(
   genreObjects,
   document.querySelector("[data-search-genres]"),

@@ -1,4 +1,7 @@
+
+
 // book-list.js
+import './book-preview.js'; // Import the BookPreview component
 
 class BookList extends HTMLElement {
     constructor() {

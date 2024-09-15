@@ -1,5 +1,6 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
+
 // Common variables
 let page = 1;
 let matches = books;

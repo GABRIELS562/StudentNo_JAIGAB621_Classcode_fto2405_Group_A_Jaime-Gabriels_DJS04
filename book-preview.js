@@ -1,11 +1,14 @@
 // bookpreview.js
 import { books, authors } from './data.js';
-
-class BookPreview extends HTMLElement {
+//export default BookPreview;
+class BookPreview extends HTMLElement {//Defines the BookPreview class that extends HTMLElement, allowing it to behave as a custom HTML element.
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
   }
+  // //	•	The constructor is called when an instance of the element is created.
+	// •	super() calls the parent HTMLElement constructor.
+	// •	this.attachShadow({ mode: 'open' }); creates a shadow DOM for this custom element, encapsulating its content and styles from the main DOM.
 
   connectedCallback() {
     const bookId = this.getAttribute('book-id');
@@ -85,7 +88,7 @@ class BookPreview extends HTMLElement {
   }
 }
 
-customElements.define('book-preview', BookPreview);
+customElements.define('book-preview', BookPreview); //register the custom element
 
 export default BookPreview;
 // //	1.	import { books, authors } from './data.js';

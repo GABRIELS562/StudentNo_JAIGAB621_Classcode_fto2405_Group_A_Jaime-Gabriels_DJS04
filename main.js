@@ -1,5 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
-
+//export default ThemeSettings;
 
 // Common variables
 let page = 1;
@@ -20,10 +20,15 @@ class BookPreview extends HTMLElement {
       this.render(book);
     }
   }
+	// •	The render(book) method is responsible for creating and rendering the HTML structure for the book preview.
+	// •	const author = authors[book.author]; retrieves the author’s name from the authors object using the book’s author property.
+	// •	const template = document.createElement('template'); creates a <template> element, which is a container to hold the structure of the custom element before it is rendered.
 
   render(book) {
     const author = authors[book.author];
     const template = document.createElement("template");
+    // This block sets the HTML and CSS content of the custom element.
+    // •	The styles apply to the component, defining how it should look:
 
     template.innerHTML = `
       <style>
@@ -88,15 +93,20 @@ class BookPreview extends HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
+  // This adds the content of the template to the shadow DOM of the custom element. cloneNode(true) ensures that all child nodes are copied.
 }
 customElements.define("book-preview", BookPreview);
 
 // Theme Settings Web Component
-class ThemeSettings extends HTMLElement {
+class ThemeSettings extends HTMLElement {//	Defines a new class ThemeSettings that extends HTMLElement. This means it will behave as a custom HTML element.
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
   }
+  // The constructor is a special method called when the element is created.
+	// •	super() calls the parent HTMLElement constructor, necessary when extending built-in elements.
+	// •	this.attachShadow({ mode: 'open' }); creates a shadow DOM for the custom element, which encapsulates its internal structure and styles, making it independent from the main DOM.
+
 
   connectedCallback() {
     this.render();
@@ -106,6 +116,10 @@ class ThemeSettings extends HTMLElement {
       this.applyTheme(theme);
     });
   }
+  // The constructor is a special method called when the element is created.
+	// •	super() calls the parent HTMLElement constructor, necessary when extending built-in elements.
+	// •	this.attachShadow({ mode: 'open' }); creates a shadow DOM for the custom element, which encapsulates its internal structure and styles, making it independent from the main DOM.
+
 
   render() {
     const template = document.createElement("template");
@@ -151,9 +165,14 @@ class ThemeSettings extends HTMLElement {
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
+  // The render() method creates the HTML structure of the component.
+	// •	A <template> element is used to define the component’s HTML, which includes:
+	// •	A <style> block to style the element.
+	// •	A form with a label, a <select> dropdown for choosing between “Day” and “Night,” and a submit button.
+	// •	this.shadowRoot.appendChild(template.content.cloneNode(true)); adds the template’s content to the shadow DOM, making it part of the custom element’s structure.
 
   applyTheme(theme) {
-    if (theme === "night") {
+    if (theme === "night") {//This method applies the selected theme by setting CSS custom properties (CSS variables).
       document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
       document.documentElement.style.setProperty("--color-light", "10, 10, 20");
     } else {
